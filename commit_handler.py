@@ -3,9 +3,9 @@ import re
 import os
 
 def get_last_commit_info():
-    """
-    Retrieve the latest commit information from the git repository.
-    """
+#    """
+ #   Retrieve the latest commit information from the git repository.
+  #  """
     commit_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
     commit_message = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip().decode()
     commit_author = subprocess.check_output(["git", "log", "-1", "--pretty=%an"]).strip().decode()
@@ -19,31 +19,31 @@ def get_last_commit_info():
     }
 
 def get_last_commit_diff():
-    """
-    Retrieve the diff of the latest commit.
-    """
+#    """
+ #   Retrieve the diff of the latest commit.
+  #  """
     commit_diff = subprocess.check_output(["git", "diff", "HEAD~1", "HEAD"]).decode()
     return commit_diff
 
 def get_changed_filenames(commit_diff):
-    """
-    Extract the filenames from the commit diff.
-    """
+  #  """
+  #  Extract the filenames from the commit diff.
+  #  """
     filenames = re.findall(r'diff --git a/(.+?) b/', commit_diff)
     return filenames
 
 def get_function_names(commit_diff):
-    """
-    Extract function names from the commit diff.
-    """
+  #  """
+  #  Extract function names from the commit diff.
+  #  """
     # This regex works for Python and similar C-like languages where functions start with 'def' or return type.
     function_names = re.findall(r'^\+.*(?:def|function|public|private|protected)\s+(\w+)', commit_diff, re.MULTILINE)
     return function_names
 
 def extract_function_from_file(filename, function_name):
-    """
-    Extract the full function definition from the file.
-    """
+   # """
+   # Extract the full function definition from the file.
+   # """
     function_pattern = re.compile(
         r'(def|function|public|private|protected|static|final)\s+{}\s*\(.*?\)\s*{{.*?}}'.format(function_name), 
         re.DOTALL
@@ -57,9 +57,9 @@ def extract_function_from_file(filename, function_name):
             return None
 
 def handle_commit():
-    """
-    Action to take after a commit.
-    """
+  #  """
+  #  Action to take after a commit.
+  #  """
     commit_info = get_last_commit_info()
     commit_diff = get_last_commit_diff()
     filenames = get_changed_filenames(commit_diff)
