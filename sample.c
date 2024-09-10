@@ -23,7 +23,7 @@
       int add = sum(10, 30);
       printf("Sum is: %d", add);
       int diff = subtraction(15, 10);
-      printf("Difference is: %d", diff);
+      printf(" Difference is: %d", diff);
       return 0;
     }
                
