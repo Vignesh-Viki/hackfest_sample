@@ -1,0 +1,45 @@
+diff --git a/sess/sx/sxc/parser/pfcp_util.c b/sess/sx/sxc/parser/pfcp_util.c
+index 1fa7510..4a83952 100644
+--- a/sess/sx/sxc/parser/pfcp_util.c
++++ b/sess/sx/sxc/parser/pfcp_util.c
+@@ -1554,7 +1554,7 @@ pfcp_sx_reset_sess_report_rsp(PfcpSessReportRsp *rsp, void *ie_info)
+rsp->updateUrrList.valid = 0;
+rsp->updateUrrList.numUrr = 0;
+
+if(msg_ie_info->num_update_urr) {
+- memset(&rsp->updateUrrList.Urr[0], 0, sizeof(rsp->updateUrrList.Urr[0])* msg_ie_info->num_update_urr);
++ memset(&rsp->updateUrrList.Urr, 0, sizeof(&rsp->updateUrrList.Urr[0])* msg_ie_info->num_update_urr);
+
+diff --git a/sess/smgr/sessmgr_saegw.c b/sess/smgr/sessmgr_saegw.c
+index 1fa7510..4a83952 100644
+--- a/sess/smgr/sessmgr_saegw.c
++++ b/sess/smgr/sessmgr_saegw.c
+@@ -40,7 +40,7 @@ void sessmgr_saegw_empty_saegw_uid_entry(sessmgr_instance_t        *instance,
+
+ static
+ bool sessmgr_saegw_is_bearer_eligible_for_dldr(sessmgr_callline_t* clp,
+-                                               UCHAR ebi);
++                                               uint_32 ebi);
+ static
+ bool sessmgr_saegw_is_ntsr_sx_modify_required(sessmgr_callline_t* clp,
+                                          sgw_modify_req_t *modify_req);
+
+diff --git a/sess/smgr/sessmgr_sx_util.c b/sess/smgr/sessmgr_sx_util.c
+index 181e4fb..79de416 100755
+--- a/sess/smgr/sessmgr_sx_util.c
++++ b/sess/smgr/sessmgr_sx_util.c
+@@ -17206,7 +17206,7 @@ sn_status_t smc_sxa_fill_sess_modify_req_trgr_cbrsp(sessmgr_pdn_connection_t   *
+-          if(bearer->fteid.eNbData.ipv6.valid == TRUE){
++          if(bearer->fteid.eNbData.ipv6.valid == TRUE && bearer->fteid.sgwData.ipv6.valid){
+             sgw_ingress_pdr->outer_header_removal.description = PFCP_OHR_GTPU_UDP_IPv6;
+           }
+           else {
+@@ -17295,7 +17295,7 @@ sn_status_t smc_sxa_fill_sess_modify_req_trgr_cbrsp(sessmgr_pdn_connection_t   *
+         if(bearer->fteid.eNbData.valid) {
+           /*EnodeB Data TEID is valid - S1 U Tunnel*/
+           sgw_egress_far->update_forw_params.outer_header_creation.teid = bearer->fteid.eNbData.teid;
+-          if (bearer->fteid.eNbData.ipv6.valid){
++          if (bearer->fteid.eNbData.ipv6.valid && bearer->fteid.sgwData.ipv6.valid){
+             sgw_egress_far->update_forw_params.outer_header_creation.description = PFCP_OHC_GTPU_UDP_IPv6;
+             sgw_egress_far->update_forw_params.outer_header_creation.ipv6.valid = TRUE;
+             sgw_egress_far->update_forw_params.outer_header_creation.ipv6.addr = bearer->fteid.eNbData.ipv6.addr;
