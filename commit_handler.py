@@ -71,7 +71,8 @@ def handle_commit():
     print(f"Author: {commit_info['author']}")
     print(f"Date: {commit_info['date']}")
     print("\nChanged Files:")
-    for filename in filenames:
+    print("\nChanged Files:", function_names)
+     for filename in filenames:
         print(f" - {filename}")
         for function_name in function_names:
             full_function = extract_function_from_file(filename, function_name)
